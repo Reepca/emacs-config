@@ -5,7 +5,13 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(fill-column 80)
- '(lua-default-application "luajit"))
+ '(lua-default-application "luajit")
+ '(safe-local-variable-values
+   (quote
+    ((eval modify-syntax-entry 43 "'")
+     (eval modify-syntax-entry 36 "'")
+     (eval modify-syntax-entry 126 "'")
+     (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,8 +27,28 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize) ;; You might already have this line
+(if (not (package-installed-p 'use-package))
+    (progn
+      (package-refresh-contents)
+      (package-install 'use-package)))
+(require 'use-package)
+(add-to-list 'package-archives
+	     '("elpy" . "https://jorgenschaefer.github.io/packages"))
+(setq use-package-always-ensure t)
+(use-package slime)
+(use-package elpy)
+(use-package emms)
+(use-package smart-compile)
+(use-package eww)
+(use-package geiser)
+(use-package magit)
+(use-package rainbow-delimiters)
+(use-package paredit)
+(use-package auctex)
+(use-package forth-mode)
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
 (require 'color-theme)
 (setq color-theme-is-global t)
 (color-theme-initialize)
@@ -45,8 +71,6 @@
     ".m4a" ".flv" ".ogv" ".pls" ".opus"))
   "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
 
-(add-to-list 'package-archives
-	     '("elpy" . "https://jorgenschaefer.github.io/packages"))
 (elpy-enable)
 
 (require 'smart-compile)
@@ -54,24 +78,24 @@
 
 (add-to-list 'load-path "~/.emacs.d/manual-stuff/")
 
-(autoload 'forth-mode "gforth.el")
-     (setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode)
-     			    auto-mode-alist))
-     (autoload 'forth-block-mode "gforth.el")
-     (setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode)
-     			    auto-mode-alist))
-     (add-hook 'forth-mode-hook (function (lambda ()
-        ;; customize variables here:
-        (setq forth-indent-level 4)
-        (setq forth-minor-indent-level 2)
-        (setq forth-hilight-level 3)
-        ;;; ...
-     )))
-
-
-
 (setq redisplay-dont-pause t
   scroll-margin 1
   scroll-step 1
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
+
+(defun brainpower (prefix)
+  (interactive "P")
+  (format "prefix: ~a" prefix)
+  (let ((foo))
+    (dotimes (i (prefix-numeric-value prefix) foo)
+      (insert "O-oooooooooo AAAAE-A-A-I-A-U- JO-oooooooooooo AAE-O-A-A-U-U-A- E-eee-ee-eee AAAAE-A-E-I-E-A- JO-ooo-oo-oo-oo EEEEO-A-AAA-AAAA"))))
+
+;(global-set-key (kbd "C-c C-l") 'brainpower)
+
+(require 'clhs-use-local "~/quicklisp/clhs-use-local.el" t)
+(defun shrug (prefix)
+  (interactive "P")
+  (insert "¯\\_(ツ)_/¯"))
+
+(setq password-cache-expiry nil)
