@@ -44,7 +44,7 @@
 (use-package magit)
 (use-package rainbow-delimiters)
 (use-package paredit)
-(use-package auctex)
+(use-package auctex-latexmk)
 (use-package forth-mode)
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -99,3 +99,8 @@
   (insert "¯\\_(ツ)_/¯"))
 
 (setq password-cache-expiry nil)
+
+
+;; NOTE: Some programs emacs relies on to do its bidding in this config. These
+;; include Steel Bank Common Lisp, Python 3, any compiling stuff (like gcc) ,
+;; git, latex, and gforth.
