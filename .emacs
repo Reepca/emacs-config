@@ -4,8 +4,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
+ '(custom-safe-themes
+   (quote
+    ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(fill-column 80)
  '(lua-default-application "luajit")
+ '(org-startup-truncated nil)
+ '(package-selected-packages
+   (quote
+    (guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((eval modify-syntax-entry 43 "'")
@@ -45,7 +52,12 @@
 (use-package rainbow-delimiters)
 (use-package paredit)
 (use-package auctex-latexmk)
-(use-package forth-mode)
+(if (file-exists-p "~/.emacs.d/manual-stuff/forth-mode")
+    (progn (push "~/.emacs.d/manual-stuff/forth-mode" load-path)
+	   (require 'forth-mode)
+	   (require 'forth-block-mode)
+	   (require 'forth-interaction-mode))
+  (use-package forth-mode))
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -73,9 +85,6 @@
 
 (elpy-enable)
 
-(require 'smart-compile)
-(add-to-list 'smart-compile-alist '(ada-mode . "gnatmake -o %n %f -g -cargs -gnatq -gnatQ -bargs  -largs"))
-
 (add-to-list 'load-path "~/.emacs.d/manual-stuff/")
 
 (setq redisplay-dont-pause t
@@ -100,7 +109,17 @@
 
 (setq password-cache-expiry nil)
 
+(defun lenny-face (prefix)
+  (interactive "P")
+  (insert "( ͡° ͜ʖ ͡°)"))
 
 ;; NOTE: Some programs emacs relies on to do its bidding in this config. These
 ;; include Steel Bank Common Lisp, Python 3, any compiling stuff (like gcc) ,
 ;; git, latex, and gforth.
+
+
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(set-face-attribute 'default nil :height 130)
