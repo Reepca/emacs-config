@@ -12,13 +12,14 @@
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
+    (gnu-apl-mode csharp-mode web-mode guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((eval modify-syntax-entry 43 "'")
      (eval modify-syntax-entry 36 "'")
      (eval modify-syntax-entry 126 "'")
-     (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
+     (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>"))))
+ '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -52,26 +53,32 @@
 (use-package rainbow-delimiters)
 (use-package paredit)
 (use-package auctex-latexmk)
+(use-package web-mode)
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
 (if (file-exists-p "~/.emacs.d/manual-stuff/forth-mode")
     (progn (push "~/.emacs.d/manual-stuff/forth-mode" load-path)
 	   (require 'forth-mode)
 	   (require 'forth-block-mode)
 	   (require 'forth-interaction-mode))
   (use-package forth-mode))
-(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (require 'color-theme)
 (setq color-theme-is-global t)
 (color-theme-initialize)
 					;(color-theme-deep-blue)
-(add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/")
-(require 'guix-init nil t)
 (setq slime-contribs '(slime-fancy)) ; YAYYY
 (add-hook 'lisp-mode-hook (lambda ()
 			   (paredit-mode)
 			   (rainbow-delimiters-mode)
 			   (auto-fill-mode)))
+
+(add-hook 'scheme-mode-hook (lambda ()
+			      (paredit-mode)
+			      (rainbow-delimiters-mode)
+			      (auto-fill-mode)))
 
 (require 'emms-setup)
 (emms-standard)
@@ -122,4 +129,5 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 115)
+(setq message-send-mail-function 'smtpmail-send-it)
