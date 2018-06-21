@@ -12,7 +12,7 @@
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (gnu-apl-mode csharp-mode web-mode guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
+    (pov-mode yaml-mode gnu-apl-mode csharp-mode web-mode guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((eval modify-syntax-entry 43 "'")
@@ -65,9 +65,6 @@
 (setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(require 'color-theme)
-(setq color-theme-is-global t)
-(color-theme-initialize)
 					;(color-theme-deep-blue)
 (setq slime-contribs '(slime-fancy)) ; YAYYY
 (add-hook 'lisp-mode-hook (lambda ()
@@ -129,5 +126,9 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-(set-face-attribute 'default nil :height 115)
+(set-face-attribute 'default nil :height 110)
 (setq message-send-mail-function 'smtpmail-send-it)
+(setq ring-bell-function 'ignore)
+(add-hook 'org-mode-hook (lambda ()
+			   (auto-fill-mode)))
+(set-fontset-font "fontset-default" nil "Unifont Upper" nil 'append)
