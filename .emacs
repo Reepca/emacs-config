@@ -12,7 +12,7 @@
  '(org-startup-truncated nil)
  '(package-selected-packages
    (quote
-    (gnu-apl-mode csharp-mode web-mode guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
+    (pov-mode yaml-mode gnu-apl-mode csharp-mode web-mode guix mmm-mode php-mode cyberpunk-theme color-theme-solarized w3m w3 use-package swiper smart-compile slime rainbow-delimiters paredit nhexl-mode magit lua-mode glsl-mode geiser eww-lnum emms elpy auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((eval modify-syntax-entry 43 "'")
@@ -56,18 +56,15 @@
 (use-package web-mode)
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
-(if (file-exists-p "~/.emacs.d/manual-stuff/forth-mode")
-    (progn (push "~/.emacs.d/manual-stuff/forth-mode" load-path)
-	   (require 'forth-mode)
-	   (require 'forth-block-mode)
-	   (require 'forth-interaction-mode))
-  (use-package forth-mode))
+;; (if (file-exists-p "~/.emacs.d/manual-stuff/forth-mode")
+;;     (progn (push "~/.emacs.d/manual-stuff/forth-mode" load-path)
+;; 	   (require 'forth-mode)
+;; 	   (require 'forth-block-mode)
+;; 	   (require 'forth-interaction-mode))
+;;   (use-package forth-mode))
 (setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(require 'color-theme)
-(setq color-theme-is-global t)
-(color-theme-initialize)
 					;(color-theme-deep-blue)
 (setq slime-contribs '(slime-fancy)) ; YAYYY
 (add-hook 'lisp-mode-hook (lambda ()
@@ -124,10 +121,27 @@
 ;; include Steel Bank Common Lisp, Python 3, any compiling stuff (like gcc) ,
 ;; git, latex, and gforth.
 
+(autoload 'forth-mode "gforth.el")
+(setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode)
+     			    auto-mode-alist))
+(autoload 'forth-block-mode "gforth.el")
+(setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode)
+     			    auto-mode-alist))
+(add-hook 'forth-mode-hook (function (lambda ()
+				       (auto-fill-mode)
+				       ;; customize variables here:
+				       (setq forth-indent-level 4)
+				       (setq forth-minor-indent-level 2)
+				       (setq forth-hilight-level 3))))
+
 
 (require 'org)
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-(set-face-attribute 'default nil :height 115)
+(set-face-attribute 'default nil :height 110)
 (setq message-send-mail-function 'smtpmail-send-it)
+(setq ring-bell-function 'ignore)
+(add-hook 'org-mode-hook (lambda ()
+			   (auto-fill-mode)))
+(set-fontset-font "fontset-default" nil "Unifont Upper" nil 'append)
