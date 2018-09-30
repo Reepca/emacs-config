@@ -67,15 +67,17 @@
 
 					;(color-theme-deep-blue)
 (setq slime-contribs '(slime-fancy)) ; YAYYY
-(add-hook 'lisp-mode-hook (lambda ()
-			   (paredit-mode)
-			   (rainbow-delimiters-mode)
-			   (auto-fill-mode)))
+(defun lisp-defaults ()
+  (paredit-mode)
+  (rainbow-delimiters-mode)
+  (auto-fill-mode))
+(add-hook 'scheme-mode-hook #'lisp-defaults)
+(add-hook 'emacs-lisp-mode-hook #'lisp-defaults)
 
-(add-hook 'scheme-mode-hook (lambda ()
-			      (paredit-mode)
-			      (rainbow-delimiters-mode)
-			      (auto-fill-mode)))
+(defun cstyle-defaults ()
+  (auto-fill-mode)
+  (company-mode))
+(add-hook 'c-mode-common-hook #'cstyle-defaults)
 
 (require 'emms-setup)
 (emms-standard)
@@ -144,4 +146,21 @@
 (setq ring-bell-function 'ignore)
 (add-hook 'org-mode-hook (lambda ()
 			   (auto-fill-mode)))
+
+;; ggtags conf
+(setq company-backends '((company-dabbrev-code company-gtags)))
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+              (ggtags-mode 1))))
+(require 'ggtags)
+(define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+(define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+(define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+(define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+(define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+
+(define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
+
 (set-fontset-font "fontset-default" nil "Unifont Upper" nil 'append)
